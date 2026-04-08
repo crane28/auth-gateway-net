@@ -1,12 +1,19 @@
-namespace AuthGateway.Domain;
+using AuthGateway.Domain.Enums;
+
+namespace AuthGateway.Domain.Entities;
 
 public class User
 {
-    public long Id { get; set; }
-    public string Username { get; set; }
+    #region Properties
+
+    public string Id { get; set; }
     public string Email { get; set; }
+    public string Username { get; set; }
+    public string Fullname { get; set; }
     public string PasswordHash { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public DateTime DeletedAt { get; set; }
+    public UserStatus status { get; set; }
+    public int FailedLoginCount { get; set; }
+    public DateTime? LockedUntil { get; set; }
+
+    #endregion
 }

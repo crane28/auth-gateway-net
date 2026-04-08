@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {}
+    "net9.0": {
+      "AuthGateway.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/AuthGateway.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AuthGateway.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "AuthGateway.Domain/1.0.0": {
+      "type": "project",
+      "path": "../AuthGateway.Domain/AuthGateway.Domain.csproj",
+      "msbuildProject": "../AuthGateway.Domain/AuthGateway.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net9.0": []
+    "net9.0": [
+      "AuthGateway.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\amuharrom\\.nuget\\packages\\": {},
@@ -45,7 +64,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Domain\\AuthGateway.Domain.csproj": {
+              "projectPath": "D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Domain\\AuthGateway.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
