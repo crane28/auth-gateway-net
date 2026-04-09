@@ -2,4 +2,4 @@
 .vs
 */**/bin
 */**/obj
-*/**/appSettings.json
+*/**/appsettings*.json
