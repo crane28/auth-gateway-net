@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuthGateway.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b6bc1d7997528031dad77febb9fa3b6f8e7fe70c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+441fc0d4f9f3ed99565304397200c783af280d84")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuthGateway.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuthGateway.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
