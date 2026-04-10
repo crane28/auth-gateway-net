@@ -912,6 +912,16 @@
         "build": {
           "buildTransitive/net6.0/_._": {}
         }
+      },
+      "AuthGateway.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/AuthGateway.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AuthGateway.Domain.dll": {}
+        }
       }
     }
   },
@@ -2774,10 +2784,16 @@
         "system.threading.channels.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "AuthGateway.Domain/1.0.0": {
+      "type": "project",
+      "path": "../AuthGateway.Domain/AuthGateway.Domain.csproj",
+      "msbuildProject": "../AuthGateway.Domain/AuthGateway.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "AuthGateway.Domain >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.0",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.0"
     ]
@@ -2820,7 +2836,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Domain\\AuthGateway.Domain.csproj": {
+              "projectPath": "D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Domain\\AuthGateway.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -2883,5 +2903,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Infrastructure\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
+    }
+  ]
 }

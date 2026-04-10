@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace AuthGateway.Infrastructure.Entities;
 
-public partial class UserRole
+public partial class UserConsent
 {
     public Guid UserId { get; set; }
 
     public Guid ClientId { get; set; }
 
-    public Guid RoleId { get; set; }
+    public List<string> GrantedScopes { get; set; } = null!;
 
-    public DateTime AssignedAt { get; set; }
+    public DateTime GrantedAt { get; set; }
 
-    public Guid AssignedBy { get; set; }
+    public DateTime? RevokedAt { get; set; }
 }

@@ -4,12 +4,7 @@ namespace AuthGateway.Application.Services;
 
 public class AuthService
 {
-    public bool Authenticate(string email, string password)
-    {
-        return true;
-    }
-
-    public bool Register(User user)
+    public bool Login(string email, string password)
     {
         return true;
     }

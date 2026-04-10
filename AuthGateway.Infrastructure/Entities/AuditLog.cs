@@ -10,9 +10,9 @@ public partial class AuditLog
 
     public Guid UserId { get; set; }
 
-    public Guid ApplicationId { get; set; }
+    public Guid ClientId { get; set; }
 
-    public string EventType { get; set; } = null!;
+    public Guid EventTypeId { get; set; }
 
     public IPAddress IpAddress { get; set; } = null!;
 

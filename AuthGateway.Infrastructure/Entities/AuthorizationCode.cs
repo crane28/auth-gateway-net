@@ -9,15 +9,19 @@ public partial class AuthorizationCode
 
     public Guid UserId { get; set; }
 
-    public Guid ApplicationId { get; set; }
+    public Guid ClientId { get; set; }
 
-    public string Code { get; set; } = null!;
+    public string CodeHash { get; set; } = null!;
 
-    public bool IsUsed { get; set; }
+    public string CodeChallenge { get; set; } = null!;
+
+    public string RedirectUri { get; set; } = null!;
+
+    public List<string> Scopes { get; set; } = null!;
+
+    public string Nonce { get; set; } = null!;
+
+    public DateTime ExpiresAt { get; set; }
 
     public DateTime? UsedAt { get; set; }
-
-    public DateTime? ExpiresAt { get; set; }
-
-    public DateTime CreatedAt { get; set; }
 }

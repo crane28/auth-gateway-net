@@ -4,10 +4,10 @@ namespace AuthGateway.Domain.Interfaces.Repositories;
 
 public interface IUserRepository
 {
-    public bool Insert(User user);
-    public User? GetById(string id);
-    public User? GetByEmail(string email);
-    public User? GetByUsername(string username);
-    public bool Update(string id, User user);
-    public bool Delete(string id);
+    bool Insert(User user);
+    Task<User?> GetByIdAsync(Guid id);
+    Task<User?> GetByEmailAsync(string email);
+    Task<User?> GetByUsernameAsync(string username);
+    bool Update(string id, User user);
+    bool Delete(string id);
 }

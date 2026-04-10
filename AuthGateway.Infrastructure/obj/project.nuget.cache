@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sfMXljt7yiI=",
+  "dgSpecHash": "OuJ6HpXhNFE=",
   "success": true,
   "projectFilePath": "D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Infrastructure\\AuthGateway.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -49,5 +49,15 @@
     "C:\\Users\\amuharrom\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.14\\microsoft.windowsdesktop.app.ref.9.0.14.nupkg.sha512",
     "C:\\Users\\amuharrom\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.14\\microsoft.aspnetcore.app.ref.9.0.14.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "message": "Problem reading the cache file D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Infrastructure\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
+      "projectPath": "D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Infrastructure\\AuthGateway.Infrastructure.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\03. Personal Projects\\02. Auth Gateway - NET Core\\AuthGateway.Infrastructure\\AuthGateway.Infrastructure.csproj",
+      "targetGraphs": []
+    }
+  ]
 }

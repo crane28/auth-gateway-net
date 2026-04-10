@@ -10,15 +10,19 @@ public partial class RefreshToken
 
     public Guid UserId { get; set; }
 
-    public Guid ApplicationId { get; set; }
+    public Guid ClientId { get; set; }
 
     public string TokenHash { get; set; } = null!;
 
-    public DateTime? ExpiresAt { get; set; }
+    public List<string> Scopes { get; set; } = null!;
 
-    public DateTime? RevokedAt { get; set; }
+    public Guid FamilyId { get; set; }
 
     public Guid ReplacedById { get; set; }
+
+    public DateTime ExpiresAt { get; set; }
+
+    public DateTime? RevokedAt { get; set; }
 
     public IPAddress IpAddress { get; set; } = null!;
 

@@ -16,74 +16,42 @@ public partial class AuthGatewayContext : DbContext
     {
     }
 
-    public virtual DbSet<Application> Applications { get; set; }
-
     public virtual DbSet<AuditLog> AuditLogs { get; set; }
 
     public virtual DbSet<AuthorizationCode> AuthorizationCodes { get; set; }
+
+    public virtual DbSet<EventType> EventTypes { get; set; }
+
+    public virtual DbSet<OauthClient> OauthClients { get; set; }
 
     public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<SigningKey> SigningKeys { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<UserConsent> UserConsents { get; set; }
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=ep-old-base-a1zw872n-pooler.ap-southeast-1.aws.neon.tech; Database=auth-gateway; Username=neondb_owner; Password=npg_IFf1yOcC5eRV; SSL Mode=Require; Trust Server Certificate=True;");
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Application>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("applications_pk");
-
-            entity.ToTable("applications");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.AllowedCallbackUrls)
-                .HasDefaultValueSql("'{}'::text[]")
-                .HasColumnName("allowed_callback_urls");
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("now()")
-                .HasColumnName("created_at");
-            entity.Property(e => e.IsActive)
-                .HasDefaultValue(true)
-                .HasColumnName("is_active");
-            entity.Property(e => e.Name)
-                .HasMaxLength(128)
-                .HasDefaultValueSql("''::character varying")
-                .HasColumnName("name");
-            entity.Property(e => e.SecretHash)
-                .HasMaxLength(256)
-                .HasDefaultValueSql("''::character varying")
-                .HasColumnName("secret_hash");
-            entity.Property(e => e.UpdatedAt)
-                .HasDefaultValueSql("now()")
-                .HasColumnName("updated_at");
-        });
-
         modelBuilder.Entity<AuditLog>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("audit_logs_pk");
+            entity
+                .HasNoKey()
+                .ToTable("audit_logs");
 
-            entity.ToTable("audit_logs");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.ApplicationId).HasColumnName("application_id");
+            entity.Property(e => e.ClientId).HasColumnName("client_id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnName("created_at");
-            entity.Property(e => e.EventType)
-                .HasMaxLength(64)
-                .HasDefaultValueSql("''::character varying")
-                .HasColumnName("event_type");
+            entity.Property(e => e.EventTypeId).HasColumnName("event_type_id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.IpAddress)
                 .HasDefaultValueSql("'0.0.0.0'::inet")
                 .HasColumnName("ip_address");
@@ -106,19 +74,107 @@ public partial class AuthGatewayContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.ApplicationId).HasColumnName("application_id");
+            entity.Property(e => e.ClientId).HasColumnName("client_id");
+            entity.Property(e => e.CodeChallenge)
+                .HasDefaultValueSql("''::text")
+                .HasColumnName("code_challenge");
+            entity.Property(e => e.CodeHash)
+                .HasDefaultValueSql("''::text")
+                .HasColumnName("code_hash");
+            entity.Property(e => e.ExpiresAt).HasColumnName("expires_at");
+            entity.Property(e => e.Nonce)
+                .HasDefaultValueSql("''::text")
+                .HasColumnName("nonce");
+            entity.Property(e => e.RedirectUri)
+                .HasDefaultValueSql("''::text")
+                .HasColumnName("redirect_uri");
+            entity.Property(e => e.Scopes)
+                .HasDefaultValueSql("'{}'::text[]")
+                .HasColumnName("scopes");
+            entity.Property(e => e.UsedAt).HasColumnName("used_at");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+        });
+
+        modelBuilder.Entity<EventType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("event_types_pk");
+
+            entity.ToTable("event_types");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
             entity.Property(e => e.Code)
+                .HasMaxLength(64)
                 .HasDefaultValueSql("''::character varying")
                 .HasColumnName("code");
+            entity.Property(e => e.Description)
+                .HasMaxLength(256)
+                .HasDefaultValueSql("''::character varying")
+                .HasColumnName("description");
+        });
+
+        modelBuilder.Entity<OauthClient>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("oauth_clients_pk");
+
+            entity.ToTable("oauth_clients");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.AccessTokenLifetimeInSec)
+                .HasDefaultValue(900)
+                .HasColumnName("access_token_lifetime_in_sec");
+            entity.Property(e => e.AllowedGrantTypes)
+                .HasDefaultValueSql("'{}'::text[]")
+                .HasColumnName("allowed_grant_types");
+            entity.Property(e => e.AllowedScopes)
+                .HasDefaultValueSql("'{}'::text[]")
+                .HasColumnName("allowed_scopes");
+            entity.Property(e => e.ClientId)
+                .HasMaxLength(64)
+                .HasDefaultValueSql("''::character varying")
+                .HasColumnName("client_id");
+            entity.Property(e => e.ClientSecretHash)
+                .HasDefaultValueSql("''::text")
+                .HasColumnName("client_secret_hash");
+            entity.Property(e => e.ClientType)
+                .HasMaxLength(16)
+                .HasDefaultValueSql("''::character varying")
+                .HasColumnName("client_type");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnName("created_at");
-            entity.Property(e => e.ExpiresAt).HasColumnName("expires_at");
-            entity.Property(e => e.IsUsed)
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.DeletedAt).HasColumnName("deleted_at");
+            entity.Property(e => e.DeletedBy).HasColumnName("deleted_by");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
+            entity.Property(e => e.Name)
+                .HasMaxLength(128)
+                .HasDefaultValueSql("''::character varying")
+                .HasColumnName("name");
+            entity.Property(e => e.PostLogoutRedirectUris)
+                .HasDefaultValueSql("'{}'::text[]")
+                .HasColumnName("post_logout_redirect_uris");
+            entity.Property(e => e.RedirectUris)
+                .HasDefaultValueSql("'{}'::text[]")
+                .HasColumnName("redirect_uris");
+            entity.Property(e => e.RefreshTokenLifetimeInSec)
+                .HasDefaultValue(604800)
+                .HasColumnName("refresh_token_lifetime_in_sec");
+            entity.Property(e => e.RequiredConsent)
                 .HasDefaultValue(false)
-                .HasColumnName("is_used");
-            entity.Property(e => e.UsedAt).HasColumnName("used_at");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+                .HasColumnName("required_consent");
+            entity.Property(e => e.RequiredPkce)
+                .HasDefaultValue(false)
+                .HasColumnName("required_pkce");
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>
@@ -130,19 +186,22 @@ public partial class AuthGatewayContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.ApplicationId).HasColumnName("application_id");
+            entity.Property(e => e.ClientId).HasColumnName("client_id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnName("created_at");
             entity.Property(e => e.ExpiresAt).HasColumnName("expires_at");
+            entity.Property(e => e.FamilyId).HasColumnName("family_id");
             entity.Property(e => e.IpAddress)
                 .HasDefaultValueSql("'0.0.0.0'::inet")
                 .HasColumnName("ip_address");
             entity.Property(e => e.ReplacedById).HasColumnName("replaced_by_id");
             entity.Property(e => e.RevokedAt).HasColumnName("revoked_at");
+            entity.Property(e => e.Scopes)
+                .HasDefaultValueSql("'{}'::text[]")
+                .HasColumnName("scopes");
             entity.Property(e => e.TokenHash)
-                .HasMaxLength(256)
-                .HasDefaultValueSql("''::character varying")
+                .HasDefaultValueSql("''::text")
                 .HasColumnName("token_hash");
             entity.Property(e => e.UserAgent)
                 .HasDefaultValueSql("''::text")
@@ -159,19 +218,49 @@ public partial class AuthGatewayContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("now()")
-                .HasColumnName("created_at");
             entity.Property(e => e.Description)
                 .HasDefaultValueSql("''::text")
                 .HasColumnName("description");
+            entity.Property(e => e.IsSystem)
+                .HasDefaultValue(false)
+                .HasColumnName("is_system");
             entity.Property(e => e.Name)
-                .HasMaxLength(128)
+                .HasMaxLength(64)
                 .HasDefaultValueSql("''::character varying")
                 .HasColumnName("name");
-            entity.Property(e => e.UpdatedAt)
+        });
+
+        modelBuilder.Entity<SigningKey>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("signing_keys_pk");
+
+            entity.ToTable("signing_keys");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Algorithm)
+                .HasMaxLength(16)
+                .HasDefaultValueSql("''::character varying")
+                .HasColumnName("algorithm");
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnName("updated_at");
+                .HasColumnName("created_at");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValueSql("''::character varying")
+                .HasColumnType("character varying")
+                .HasColumnName("is_active");
+            entity.Property(e => e.Kid)
+                .HasMaxLength(64)
+                .HasDefaultValueSql("''::character varying")
+                .HasColumnName("kid");
+            entity.Property(e => e.PrivateKeyPem)
+                .HasDefaultValueSql("''::text")
+                .HasColumnName("private_key_pem");
+            entity.Property(e => e.PublicKeyPem)
+                .HasDefaultValueSql("''::text")
+                .HasColumnName("public_key_pem");
+            entity.Property(e => e.RetiredAt).HasColumnName("retired_at");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -189,7 +278,7 @@ public partial class AuthGatewayContext : DbContext
                 .HasDefaultValueSql("now()")
                 .HasColumnName("created_at");
             entity.Property(e => e.Email)
-                .HasMaxLength(384)
+                .HasMaxLength(256)
                 .HasDefaultValueSql("''::character varying")
                 .HasColumnName("email");
             entity.Property(e => e.FailedLoginCount)
@@ -213,21 +302,36 @@ public partial class AuthGatewayContext : DbContext
                 .HasColumnName("username");
         });
 
+        modelBuilder.Entity<UserConsent>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.ClientId }).HasName("user_consents_pk");
+
+            entity.ToTable("user_consents");
+
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.ClientId).HasColumnName("client_id");
+            entity.Property(e => e.GrantedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("granted_at");
+            entity.Property(e => e.GrantedScopes)
+                .HasDefaultValueSql("'{}'::text[]")
+                .HasColumnName("granted_scopes");
+            entity.Property(e => e.RevokedAt).HasColumnName("revoked_at");
+        });
+
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("user_roles_pk");
+            entity.HasKey(e => new { e.UserId, e.ClientId, e.RoleId }).HasName("user_roles_pk");
 
             entity.ToTable("user_roles");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.ApplicationId).HasColumnName("application_id");
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("now()")
-                .HasColumnName("created_at");
-            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.ClientId).HasColumnName("client_id");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.AssignedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("assigned_at");
+            entity.Property(e => e.AssignedBy).HasColumnName("assigned_by");
         });
 
         OnModelCreatingPartial(modelBuilder);
